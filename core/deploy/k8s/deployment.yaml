@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secure-core
+  namespace: secure-core
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: secure-core
+  template:
+    metadata:
+      labels:
+        app: secure-core
+    spec:
+      containers:
+        - name: secure-core
+          image: SEU_USUARIO/secure-core:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4000
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: secure-core-config
+            - secretRef:
+                name: secure-core-secrets
+          volumeMounts:
+            - name: certs
+              mountPath: /app/certs
+              readOnly: true
+      volumes:
+        - name: certs
+          secret:
+            secretName: secure-core-certs

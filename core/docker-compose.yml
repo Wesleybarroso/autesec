@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  secure-core:
+    build: .
+    container_name: secure-core
+    restart: always
+    ports:
+      - "4000:4000"   # TCP + TLS + mTLS
+      - "8080:8080"   # WebSocket
+    volumes:
+      - ./configs:/app/configs:ro
+      - ./certs:/app/certs:ro
+    depends_on:
+      - redis
+    environment:
+      - TZ=America/Sao_Paulo
+
+  redis:
+    image: redis:7-alpine
+    container_name: secure-core-redis
+    restart: always
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:

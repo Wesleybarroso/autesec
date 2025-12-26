@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: secure-core
+  namespace: secure-core
+spec:
+  selector:
+    app: secure-core
+  type: LoadBalancer
+  ports:
+    - name: tcp
+      port: 4000
+      targetPort: 4000
+    - name: ws
+      port: 8080
+      targetPort: 8080
