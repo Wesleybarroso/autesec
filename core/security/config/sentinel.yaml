@@ -1,0 +1,51 @@
+version: 1
+
+levels:
+  low:
+    risk_threshold: 70
+    actions:
+      - log
+      - notify
+
+  medium:
+    risk_threshold: 50
+    actions:
+      - log
+      - notify
+      - reauth
+      - throttle
+
+  high:
+    risk_threshold: 30
+    actions:
+      - log
+      - notify
+      - isolate
+      - revoke
+      - force_disconnect
+
+rules:
+
+  anomaly_detection:
+    enabled: true
+    reconnect_threshold: 5
+    silence_seconds: 120
+    burst_messages_per_second: 50
+
+  geofencing:
+    enabled: true
+    allowed_regions:
+      - BR
+    action_on_violation: isolate
+
+  anti_sabotage:
+    enabled: true
+    sudden_disconnect: true
+    repeated_failures: 3
+
+  qos:
+    enabled: true
+    actions:
+      reduce_fps_on_congestion: true
+      reduce_bitrate_on_congestion: true
+      prioritize_critical_devices: true

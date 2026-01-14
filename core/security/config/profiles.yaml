@@ -1,0 +1,52 @@
+version: 1
+
+profiles:
+
+  web-login:
+    description: Login e painel web
+    cores:
+      - core-shield
+      - core-session
+      - core-access
+    sentinel:
+      enabled: true
+      level: low
+
+  mobile-app:
+    description: Aplicativo móvel
+    cores:
+      - core-shield
+      - core-session
+      - core-access
+    sentinel:
+      enabled: true
+      level: medium
+
+  camera-basic:
+    description: Câmera simples
+    cores:
+      - core-shield
+      - core-session
+    sentinel:
+      enabled: false
+
+  camera-critical:
+    description: Câmera crítica (CFTV empresarial)
+    cores:
+      - core-shield
+      - core-session
+      - core-identity
+      - core-bind
+      - core-sentinel
+    sentinel:
+      enabled: true
+      level: high
+
+  api-partner:
+    description: Integração de parceiro externo
+    cores:
+      - core-shield
+      - core-identity
+    sentinel:
+      enabled: true
+      level: medium

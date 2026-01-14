@@ -1,0 +1,60 @@
+version: 1
+
+cores:
+  core-shield:
+    name: Core Shield
+    description: Canal seguro com TLS/mTLS
+    mandatory: true
+    provides:
+      - encrypted_channel
+      - certificate_validation
+
+  core-session:
+    name: Core Session
+    description: Sessão persistente com reconexão
+    depends_on:
+      - core-shield
+    provides:
+      - session_id
+      - reconnect
+      - heartbeat
+
+  core-identity:
+    name: Core Identity
+    description: Identidade forte baseada em certificado
+    depends_on:
+      - core-shield
+    provides:
+      - mtls
+      - cert_fingerprint
+      - device_identity
+
+  core-bind:
+    name: Core Bind
+    description: Vínculo entre sessão e identidade
+    depends_on:
+      - core-session
+      - core-identity
+    provides:
+      - session_identity_binding
+      - anti_hijack
+
+  core-access:
+    name: Core Access
+    description: Login web e autenticação de usuários
+    depends_on:
+      - core-shield
+    provides:
+      - password_auth
+      - jwt
+      - user_sessions
+
+  core-sentinel:
+    name: Core Sentinel
+    description: Inteligência, anomalias e decisões automáticas
+    depends_on:
+      - core-shield
+    provides:
+      - anomaly_detection
+      - risk_scoring
+      - automated_actions

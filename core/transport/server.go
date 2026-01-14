@@ -5,15 +5,19 @@ import (
 	"crypto/x509"
 	"io/ioutil"
 	"log"
-	"net"
+	
 )
 
 type TCPServer struct {
-	cfg TLSConfig
+	cfg     TLSConfig
+	handler *Handler
 }
 
-func NewTCPServer(cfg TLSConfig) *TCPServer {
-	return &TCPServer{cfg: cfg}
+func NewTCPServer(cfg TLSConfig, handler *Handler) *TCPServer {
+	return &TCPServer{
+		cfg:     cfg,
+		handler: handler,
+	}
 }
 
 func (s *TCPServer) Start() error {
@@ -34,7 +38,9 @@ func (s *TCPServer) Start() error {
 		if err != nil {
 			continue
 		}
-		go HandleConnection(conn)
+
+		// 🔥 Agora usa Core Session / Bind
+		go s.handler.HandleConnection(conn)
 	}
 }
 
